@@ -32,19 +32,66 @@ menuButton.addEventListener('click', () => {
 });
 
 navLinks.forEach((link) => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navigation.classList.contains('open')) closeMenu();
+});
+
 window.addEventListener('scroll', updateHeader, { passive: true });
+const floatingBook = document.querySelector('.floating-book');
+const heroSection = document.querySelector('.hero');
+const bookingSection = document.querySelector('#booking');
+const contactSection = document.querySelector('#contact');
+
+function updateFloatingBook() {
+  if (!floatingBook || !heroSection) return;
+  const isMobile = window.matchMedia('(max-width: 680px)').matches;
+  const bookingRect = bookingSection?.getBoundingClientRect();
+  const contactRect = contactSection?.getBoundingClientRect();
+  const bookingVisible = bookingRect && bookingRect.top < window.innerHeight && bookingRect.bottom > 0;
+  const contactVisible = contactRect && contactRect.top < window.innerHeight && contactRect.bottom > 0;
+  const pastHero = window.scrollY > heroSection.offsetHeight * 0.72;
+  floatingBook.classList.toggle('visible', Boolean(isMobile && pastHero && !bookingVisible && !contactVisible));
+}
+
+window.addEventListener('scroll', updateFloatingBook, { passive: true });
+window.addEventListener('resize', updateFloatingBook);
+updateFloatingBook();
+
 updateHeader();
+const sectionNavLinks = [...document.querySelectorAll('.primary-nav a[href^="#"]:not(.button)')];
+const navTargets = sectionNavLinks
+  .map((link) => ({ link, target: document.querySelector(link.getAttribute('href')) }))
+  .filter((item) => item.target);
+
+const activeSectionObserver = new IntersectionObserver((entries) => {
+  const visible = entries
+    .filter((entry) => entry.isIntersecting)
+    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (!visible) return;
+  sectionNavLinks.forEach((link) => {
+    link.classList.remove('active');
+    link.removeAttribute('aria-current');
+  });
+  const match = navTargets.find((item) => item.target === visible.target);
+  if (match) {
+    match.link.classList.add('active');
+    match.link.setAttribute('aria-current', 'location');
+  }
+}, { rootMargin: '-35% 0px -55% 0px', threshold: [0, .15, .35] });
+
+navTargets.forEach(({ target }) => activeSectionObserver.observe(target));
+
 
 const today = new Date();
 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 dateInput.min = today.toISOString().split('T')[0];
 
 const scheduleByDay = {
-  2: { label: 'Tuesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'] },
-  3: { label: 'Wednesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'] },
-  4: { label: 'Thursday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'] },
-  5: { label: 'Friday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'] },
-  6: { label: 'Saturday hours: 6:00 AM–1:00 PM', times: ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM'] }
+  2: { label: 'Tuesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'] },
+  3: { label: 'Wednesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'] },
+  4: { label: 'Thursday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'] },
+  5: { label: 'Friday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'] },
+  6: { label: 'Saturday hours: 6:00 AM–1:00 PM', times: ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'] }
 };
 
 function resetTimeOptions(message = 'Select a date first') {
@@ -131,8 +178,9 @@ document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe
 
 galleryItems.forEach((item) => {
   item.addEventListener('click', () => {
-    const image = getComputedStyle(item).backgroundImage;
-    lightboxImage.style.backgroundImage = image;
+    const sourceImage = item.querySelector('img');
+    const imageUrl = sourceImage?.currentSrc || sourceImage?.src;
+    lightboxImage.style.backgroundImage = imageUrl ? `url("${imageUrl}")` : getComputedStyle(item).backgroundImage;
     lightboxLabel.textContent = item.dataset.label || 'Freda the Barber portfolio image';
     lightboxImage.setAttribute('aria-label', item.dataset.label || 'Freda the Barber portfolio image');
     lightbox.showModal();

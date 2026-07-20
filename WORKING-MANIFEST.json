@@ -1,0 +1,17 @@
+{
+  ".gitattributes": "1a1dbe176bc233b499d35a57db7513f2941c99ab9759f177830c9149be99005b",
+  "QA-REPORT.md": "98a9dbc12dd0c1afa77831f95219898964bf15eeee92a9de119f8239b6bf89dc",
+  "README.md": "15884aae91183927630a5abbc1eb482c51424f160b0ab40bae0c186b0801fef2",
+  "REVIEW-NOTES.md": "492092eff6a533c3a0a564cebcc9c4580c0237f24ba2e1988c0ec97dc310d8ce",
+  "assets/favicon.svg": "ca6e53beb81cc92801cdb822be82e9df337f34fd182972f8c8a14359746f6234",
+  "assets/freda-afro-taper.webp": "748c41818260b8319e4382e447d2317097938c1aab6d131b784b385ed4f51c85",
+  "assets/freda-classic-taper.webp": "0cefd3eeda2f38b2e45d9008eddcc40fd2186122e56c001102ab15b89a218fce",
+  "assets/freda-design-fade.webp": "45a4c400eb87fa1f8395015a2d4d1ce41bcd4f1c063c1bb01d91741da6af9386",
+  "assets/freda-kids-classic.webp": "b64768e46d127d5ebd2e91067426daceb3e67199c2f4834010c4a1bdaff67d4b",
+  "assets/freda-precision-fade.webp": "938e9c94628a2469c22925a5a8ada4126eab1401c763fe7ab5169888960ec9ec",
+  "assets/freda-textured-crop.webp": "28d483f6c96da016603a44377d2381fcfa2861506f3f77404e25134d41acd889",
+  "index.html": "aca5cee62f077e292940b40111407b43708c16d2341812500092fcdbfb6c93df",
+  "script.js": "a0d7ff25cfe9e66875caaf65a9c0733ab96e2034f7573a25383fdb57963642b0",
+  "styles.css": "43d4119eaa252cb0ba799ddbda5a5735b49090add4d69ac9b8be30d2e0660c57",
+  "vercel.json": "f91c66a44fb4186c4d6be9ae89d68c058f5c7abe811b20f60159302b96029c09"
+}
