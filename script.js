@@ -4,7 +4,10 @@ const navigation = document.querySelector('.primary-nav');
 const navLinks = navigation.querySelectorAll('a');
 const bookingForm = document.querySelector('#booking-form');
 const successMessage = document.querySelector('#form-success');
+const scheduleMessage = document.querySelector('#schedule-message');
 const dateInput = document.querySelector('#date');
+const timeInput = document.querySelector('#time');
+const serviceInput = document.querySelector('#service');
 const lightbox = document.querySelector('#lightbox');
 const lightboxImage = document.querySelector('#lightbox-image');
 const lightboxLabel = document.querySelector('#lightbox-label');
@@ -36,11 +39,83 @@ const today = new Date();
 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 dateInput.min = today.toISOString().split('T')[0];
 
+const scheduleByDay = {
+  2: { label: 'Tuesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'] },
+  3: { label: 'Wednesday hours: 8:00 AM–12:00 PM', times: ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'] },
+  4: { label: 'Thursday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'] },
+  5: { label: 'Friday hours: 7:00 AM–3:00 PM', times: ['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'] },
+  6: { label: 'Saturday hours: 6:00 AM–1:00 PM', times: ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM'] }
+};
+
+function resetTimeOptions(message = 'Select a date first') {
+  timeInput.innerHTML = `<option value="">${message}</option>`;
+  timeInput.disabled = true;
+}
+
+dateInput.addEventListener('change', () => {
+  successMessage.classList.remove('visible');
+  const selected = new Date(`${dateInput.value}T12:00:00`);
+  const schedule = scheduleByDay[selected.getDay()];
+
+  if (!schedule) {
+    resetTimeOptions('Closed on this day');
+    scheduleMessage.textContent = 'Freda is closed on Sundays and Mondays. Please choose Tuesday through Saturday.';
+    return;
+  }
+
+  timeInput.innerHTML = '<option value="">Select a time</option>';
+  schedule.times.forEach((time) => {
+    const option = document.createElement('option');
+    option.value = time;
+    option.textContent = time;
+    timeInput.appendChild(option);
+  });
+  timeInput.disabled = false;
+  scheduleMessage.textContent = schedule.label;
+});
+
+document.querySelectorAll('[data-service]').forEach((link) => {
+  link.addEventListener('click', () => {
+    serviceInput.value = link.dataset.service;
+  });
+});
+
 bookingForm.addEventListener('submit', (event) => {
   event.preventDefault();
+  successMessage.classList.remove('visible');
+
+  const selected = new Date(`${dateInput.value}T12:00:00`);
+  if (!scheduleByDay[selected.getDay()]) {
+    scheduleMessage.textContent = 'Freda is closed on Sundays and Mondays. Please choose another date.';
+    dateInput.focus();
+    return;
+  }
+
   if (!bookingForm.reportValidity()) return;
+
+  const formData = new FormData(bookingForm);
+  const formattedDate = selected.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  const message = [
+    'Hi Freda, I would like to request an appointment.',
+    '',
+    `Name: ${formData.get('name')}`,
+    `Callback number: ${formData.get('phone')}`,
+    `Service: ${formData.get('service')}`,
+    `Preferred date: ${formattedDate}`,
+    `Preferred time: ${formData.get('time')}`,
+    '',
+    'Please let me know if this time is available. Thank you!'
+  ].join('\n');
+
   successMessage.classList.add('visible');
-  successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const smsUrl = `sms:+12094479025?body=${encodeURIComponent(message)}`;
+  window.location.href = smsUrl;
 });
 
 const revealObserver = new IntersectionObserver((entries) => {
@@ -58,8 +133,8 @@ galleryItems.forEach((item) => {
   item.addEventListener('click', () => {
     const image = getComputedStyle(item).backgroundImage;
     lightboxImage.style.backgroundImage = image;
-    lightboxLabel.textContent = item.dataset.label || 'Barber portfolio image';
-    lightboxImage.setAttribute('aria-label', item.dataset.label || 'Barber portfolio image');
+    lightboxLabel.textContent = item.dataset.label || 'Freda the Barber portfolio image';
+    lightboxImage.setAttribute('aria-label', item.dataset.label || 'Freda the Barber portfolio image');
     lightbox.showModal();
   });
 });
