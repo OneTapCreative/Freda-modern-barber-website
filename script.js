@@ -81,7 +81,6 @@ const activeSectionObserver = new IntersectionObserver((entries) => {
 
 navTargets.forEach(({ target }) => activeSectionObserver.observe(target));
 
-
 const today = new Date();
 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 dateInput.min = today.toISOString().split('T')[0];
@@ -202,3 +201,10 @@ document.querySelectorAll('.accordion details').forEach((detail) => {
 });
 
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+// Focused visual update: use Freda's professional portrait only in the existing About section.
+const aboutImage = document.querySelector('.about-image');
+if (aboutImage) {
+  aboutImage.style.backgroundImage = 'linear-gradient(180deg, transparent, rgba(0,0,0,.32)), url("assets/freda-profile.webp")';
+  aboutImage.style.backgroundPosition = 'center 28%';
+}
