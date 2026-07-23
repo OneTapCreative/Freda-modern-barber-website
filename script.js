@@ -208,3 +208,56 @@ if (aboutImage) {
   aboutImage.style.backgroundImage = 'linear-gradient(180deg, transparent, rgba(0,0,0,.32)), url("assets/freda-profile.webp")';
   aboutImage.style.backgroundPosition = 'center 28%';
 }
+
+// Focused gallery refinement: remove the oversized classic-style tile and rebalance the remaining photos.
+const oversizedGalleryItem = document.querySelector('.gallery-item.gallery-one');
+if (oversizedGalleryItem) {
+  oversizedGalleryItem.remove();
+}
+
+const balancedGalleryStyles = document.createElement('style');
+balancedGalleryStyles.textContent = `
+  .gallery-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: 300px;
+  }
+  .gallery-grid > .gallery-item {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+  .gallery-grid > .gallery-item:nth-child(-n+2) {
+    grid-column: span 3;
+  }
+
+  @media (max-width: 980px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
+      grid-auto-rows: 300px;
+    }
+    .gallery-grid > .gallery-item,
+    .gallery-grid > .gallery-item:nth-child(-n+2) {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .gallery-grid > .gallery-item:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-rows: 360px;
+    }
+    .gallery-grid > .gallery-item,
+    .gallery-grid > .gallery-item:nth-child(-n+2),
+    .gallery-grid > .gallery-item:last-child {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+`;
+document.head.appendChild(balancedGalleryStyles);

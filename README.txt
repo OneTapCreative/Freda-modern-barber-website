@@ -1,16 +1,21 @@
-FREDA MEET PHOTO — MINOR WEBSITE UPDATE
+FREDA GALLERY CLEANUP — MINOR UPDATE
 
-This package changes only the photo used in the existing Meet Freda / About section.
-It does not change the website structure, colors, spacing, services, gallery, booking form, or mobile layout.
+This update:
+- Removes only the oversized Classic Style photo from the gallery.
+- Keeps the same photo available elsewhere on the website, including the hero section.
+- Keeps the other five gallery photos.
+- Rebalances the gallery to remove dead space on desktop, tablet, and mobile.
+- Preserves the existing Meet Freda portrait update, booking form, layout, colors, services, and content.
 
-Copy these items into the Freda website repository and replace when prompted:
+INSTALL WITH GITHUB DESKTOP
+1. Extract this ZIP.
+2. In GitHub Desktop, open Freda-modern-barber-website.
+3. Click Repository > Show in Explorer.
+4. Copy script.js from this package into the repository root.
+5. Replace the existing script.js when prompted.
+6. Return to GitHub Desktop.
+7. Summary: Remove oversized gallery photo
+8. Click Commit to main.
+9. Click Push origin.
 
-1. script.js -> repository root
-2. assets/freda-profile.webp -> assets folder
-
-Then use GitHub Desktop:
-- Summary: Update Meet Freda photo
-- Commit to main
-- Push origin
-
-Vercel will redeploy automatically.
+Vercel should redeploy automatically.
