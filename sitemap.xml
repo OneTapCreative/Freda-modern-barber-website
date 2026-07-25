@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://freda-modern-barber-website.vercel.app/</loc>
+    <lastmod>2026-07-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-classic-taper.webp</image:loc><image:title>Classic haircut and fade by Freda the Barber</image:title></image:image>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-precision-fade.webp</image:loc><image:title>Precision fade by Freda the Barber</image:title></image:image>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-textured-crop.webp</image:loc><image:title>Textured crop by Freda the Barber</image:title></image:image>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-design-fade.webp</image:loc><image:title>Custom design fade by Freda the Barber</image:title></image:image>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-kids-classic.webp</image:loc><image:title>Kids haircut by Freda the Barber</image:title></image:image>
+    <image:image><image:loc>https://freda-modern-barber-website.vercel.app/assets/freda-afro-taper.webp</image:loc><image:title>Natural texture taper by Freda the Barber</image:title></image:image>
   </url>
 </urlset>

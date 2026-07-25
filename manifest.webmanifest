@@ -1,0 +1,10 @@
+{
+  "name": "Freda the Barber",
+  "short_name": "Freda Barber",
+  "description": "Professional haircuts, fades, beard grooming, shaves, and kids cuts in Manteca, California.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101114",
+  "theme_color": "#a94f67",
+  "icons": [{"src":"/assets/favicon.svg","sizes":"any","type":"image/svg+xml"}]
+}
