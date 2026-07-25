@@ -1,0 +1,40 @@
+name: Run Freda SEO branch update
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-feature-branch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out SEO branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/advanced-seo-foundation
+          fetch-depth: 0
+
+      - name: Extract and run reviewed updater
+        shell: bash
+        run: |
+          awk '
+            /python - <<'"'"'PY'"'"'/ {capture=1; next}
+            capture && /^          PY$/ {capture=0; exit}
+            capture {sub(/^          /, ""); print}
+          ' .github/workflows/apply-advanced-seo.yml > /tmp/apply-freda-seo.py
+          python /tmp/apply-freda-seo.py
+
+      - name: Commit SEO files to feature branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html robots.txt sitemap.xml manifest.webmanifest
+          git diff --cached --quiet && exit 0
+          git commit -m "Upgrade Freda website advanced SEO"
+          git push origin HEAD:agent/advanced-seo-foundation
