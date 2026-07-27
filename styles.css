@@ -487,3 +487,26 @@ h2 { font-size: clamp(50px, 6vw, 84px); }
   }
   .floating-book.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 }
+
+/* Mobile trust points: keep all three benefits on one row */
+@media (max-width: 680px) {
+  .trust-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 6px;
+    font-size: clamp(7.5px, 2.15vw, 10px);
+  }
+
+  .trust-list li {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .trust-list li::before {
+    flex: 0 0 auto;
+    margin-right: 4px;
+  }
+}
